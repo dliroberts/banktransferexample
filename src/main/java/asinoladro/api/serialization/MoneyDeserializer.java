@@ -19,7 +19,7 @@ public class MoneyDeserializer extends StdDeserializer<Money> {
 	@Override
 	public Money deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
-		String value = jp.getValueAsString();
+		String value = jp.getValueAsString().toUpperCase();
 		
 		return Money.parse(value);
 	}

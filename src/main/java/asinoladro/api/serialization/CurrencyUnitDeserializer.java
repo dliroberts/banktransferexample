@@ -19,7 +19,7 @@ public class CurrencyUnitDeserializer extends StdDeserializer<CurrencyUnit> {
 	@Override
 	public CurrencyUnit deserialize(JsonParser jp, DeserializationContext ctxt)
 			throws IOException, JsonProcessingException {
-		String value = jp.getValueAsString();
+		String value = jp.getValueAsString().toUpperCase();
 		
 		return CurrencyUnit.of(value);
 	}

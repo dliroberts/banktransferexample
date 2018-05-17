@@ -19,6 +19,6 @@ public class CurrencyUnitSerializer extends StdSerializer<CurrencyUnit> {
 	@Override
 	public void serialize(CurrencyUnit value, JsonGenerator jgen, SerializerProvider provider)
 				throws IOException, JsonProcessingException {
-		jgen.writeStringField("str", value.toString());
+		jgen.writeString(value.toString());
 	}
 }

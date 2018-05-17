@@ -40,6 +40,10 @@ public class BankTransferResource {
 			duration = Duration.standardHours(2);
 		}
 		
+		if (from.getIban().equals(to.getIban()) ) {
+			throw new WebApplicationException("From and to accounts are the same.");
+		}
+		
 		return new TransferConfirmation(transactionId, duration);
 	}
 }

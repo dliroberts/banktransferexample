@@ -33,7 +33,7 @@ public class TransferRequest {
 		this.toAccount = toAccount;
 	}
 	
-//	@JsonProperty
+	@JsonProperty
     @JsonSerialize(using = MoneySerializer.class)
 	public Money getAmount() {
 		return amount;
