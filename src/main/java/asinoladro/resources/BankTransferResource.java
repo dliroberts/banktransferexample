@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
+import org.joda.money.Money;
 import org.joda.time.Duration;
 
 import com.codahale.metrics.annotation.Timed;
@@ -26,6 +27,7 @@ public class BankTransferResource {
     		System.out.print("hello hi");
 		Account from = req.getFromAccount();
 		Account to = req.getToAccount();
+		Money amount = req.getAmount();
 		
 		long transactionId = System.currentTimeMillis(); // TODO maybe from db?
 		Duration duration;
@@ -34,14 +36,19 @@ public class BankTransferResource {
 			duration = Duration.millis(0); // instant!
 		}
 		else if (!from.isRevolutAccount() && !to.isRevolutAccount()) {
-			throw new WebApplicationException("Either the from or to account must be a Revolut account.");
+			throw new WebApplicationException(
+					"Either the fromAccount or toAccount must be a Revolut account.");
 		}
 		else {
 			duration = Duration.standardHours(2);
 		}
 		
 		if (from.getIban().equals(to.getIban()) ) {
-			throw new WebApplicationException("From and to accounts are the same.");
+			throw new WebApplicationException("fromAccount and toAccount are the same.");
+		}
+		
+		if (amount.isNegativeOrZero()) {
+			throw new WebApplicationException("amount must be positive.");
 		}
 		
 		return new TransferConfirmation(transactionId, duration);
