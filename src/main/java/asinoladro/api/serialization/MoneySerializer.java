@@ -20,13 +20,5 @@ public class MoneySerializer extends StdSerializer<Money> {
 	public void serialize(Money value, JsonGenerator jgen, SerializerProvider provider)
 				throws IOException, JsonProcessingException {
 		jgen.writeStringField("str", value.toString());
-//		jgen.writeStartObject();
-//		{
-//			jgen.writeNumberField("amount", value.getAmountMinorInt());
-//			jgen.writeStringField("str", value.getAmount().toString());
-//			jgen.writeStringField("symbol", value.getCurrencyUnit().getSymbol());
-//			jgen.writeStringField("currency", value.getCurrencyUnit().getCode());
-//		}
-//		jgen.writeEndObject();
 	}
 }
