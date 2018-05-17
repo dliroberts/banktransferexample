@@ -5,6 +5,6 @@ import io.dropwizard.Configuration;
 //import org.hibernate.validator.constraints.*;
 //import javax.validation.constraints.*;
 
-public class BankTransferRevolutConfiguration extends Configuration {
+public class BankTransferExampleConfiguration extends Configuration {
     
 }

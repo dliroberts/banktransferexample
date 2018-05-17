@@ -8,10 +8,10 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class BankTransferRevolutApplication extends Application<BankTransferRevolutConfiguration> {
+public class BankTransferExampleApplication extends Application<BankTransferExampleConfiguration> {
 
     public static void main(final String[] args) throws Exception {
-        new BankTransferRevolutApplication().run(args);
+        new BankTransferExampleApplication().run(args);
     }
 
     @Override
@@ -20,12 +20,12 @@ public class BankTransferRevolutApplication extends Application<BankTransferRevo
     }
 
     @Override
-    public void initialize(final Bootstrap<BankTransferRevolutConfiguration> bootstrap) {
+    public void initialize(final Bootstrap<BankTransferExampleConfiguration> bootstrap) {
         
     }
 
     @Override
-    public void run(final BankTransferRevolutConfiguration configuration,
+    public void run(final BankTransferExampleConfiguration configuration,
                     final Environment environment) {
         final BankTransferResource resource = new BankTransferResource();
         
