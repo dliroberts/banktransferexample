@@ -2,3 +2,19 @@ logging:
   level: DEBUG
   loggers:
     asinoladro: DEBUG
+
+database:
+  # the name of your JDBC driver
+  driverClass: org.h2.Driver
+
+  # the username
+  user: sa
+
+  # the password
+  password: sa
+
+  # the JDBC URL
+  url: "jdbc:h2:mem:;INIT=runscript from './src/main/resources/create.sql'\\;runscript from './src/main/resources/seed.sql'"
+
+  # the SQL query to run when validating a connection's liveness
+  validationQuery: "/* MyService Health Check */ SELECT 1"
