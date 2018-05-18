@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.money.CurrencyUnit;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -42,6 +43,84 @@ public class AccountSpec {
 		this.currency = currency;
 	}
 
+    @JsonIgnore
+    public boolean matches(Account account) {
+	    	if (!account.getIban().equals(iban))
+				return false;
+	    	if (!account.getBalance().getCurrencyUnit().equals(currency))
+				return false;
+		
+	    	String otherFullName = account.getCustomer().getFullName();
+	    	
+	    	return fullNameFuzzyMatches(otherFullName);
+    }
+    
+    private static String normaliseName(String name) {
+    		return name.toUpperCase().replaceAll("[^A-Z]+", " ").trim();
+    }
+
+	private boolean fullNameFuzzyMatches(String otherFullName) {
+		// fuzzy match on name
+	    	
+	    	String name = normaliseName(fullName);
+	    	String otherName = normaliseName(otherFullName);
+	    	
+	    	// strip out any honorific titles
+	    	for (Title title : Title.values()) {
+	    		String t = title.toString() + " ";
+	    		
+	    		if (name.startsWith(t))
+	    			name = name.substring(t.length());
+	    		if (otherName.startsWith(t))
+	    			otherName = otherName.substring(t.length());
+	    	}
+	    	
+	    	if (name.equals(otherName))
+	    		return true;
+			
+	    	// first initial in one, full name in the other?
+	    	
+	    	String[] n1tokens = name.split(" ");
+	    	String[] n2tokens = otherName.split(" ");
+	    	
+	    	if (n1tokens.length == n2tokens.length) {
+	    		boolean nonInitialFound = false;
+	    		for (int i = 0; i < n1tokens.length; i++) {
+	    			String n1token = n1tokens[i];
+	    			String n2token = n2tokens[i];
+	    			
+	    			if (n1token.length() > 1)
+						nonInitialFound = true;
+					
+	    			if (n1token.equals(n2token)) {
+	    				continue;
+	    			}
+	    			
+	    			String shorter, longer;
+	    			if (n1token.length() < n2token.length()) {
+	    				shorter = n1token;
+	    				longer = n2token;
+	    			}
+	    			else {
+	    				longer = n1token;
+	    				shorter = n2token;
+	    			}
+	    			
+	    			if (shorter.length() == 1) {
+	    				if (longer.startsWith(shorter)) {
+	    					continue;
+	    				}
+	    			}
+	    			return false;
+	    		}
+	    		
+	    		if (nonInitialFound)
+	    			return true;
+	    	}
+	    	
+	    	return false;
+	}
+    
 	@JsonProperty
     public String getIban() {
     		return iban;
@@ -53,8 +132,8 @@ public class AccountSpec {
 	}
 
 	@JsonProperty @JsonSerialize(using = CurrencyUnitSerializer.class) 
-    public String getCurrencyCode() {
-		return fullName;
+    public CurrencyUnit getCurrency() {
+		return currency;
 	}
 
 	@Override
@@ -98,4 +177,8 @@ public class AccountSpec {
 			return false;
 		return true;
 	}
+}
+
+enum Title {
+	MR, MRS, MISS, MX, PROF, LORD, LADY, REV, SIR, JUDGE, DR,
 }

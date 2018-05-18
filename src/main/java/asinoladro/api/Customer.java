@@ -1,13 +1,19 @@
 package asinoladro.api;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Customer {
-	private final int id;
+	@NotEmpty
+    private final int id;
 	
-	private final String fullName;
+	@NotEmpty
+    private final String fullName;
 
-	public Customer(
+    @JsonCreator
+    public Customer(
 			@JsonProperty("id") int id,
 			@JsonProperty("fullName") String fullName
 		) {

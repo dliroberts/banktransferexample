@@ -7,7 +7,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 
-import org.jdbi.v3.core.Jdbi;
 import org.joda.money.Money;
 import org.joda.time.Duration;
 
@@ -48,6 +47,14 @@ public class BankTransferResource {
 		
 		long transactionId = System.currentTimeMillis(); // TODO maybe from db?
 		Duration duration;
+
+		if (isLocalFrom && !from.matches(localFrom)) {
+			throw new WebApplicationException("fromAccount details don't match our records.");
+		}
+
+		if (isLocalTo && !to.matches(localTo)) {
+			throw new WebApplicationException("toAccount details don't match our records.");
+		}
 		
 		if (isLocalFrom && isLocalTo) {
 			duration = Duration.millis(0); // instant!

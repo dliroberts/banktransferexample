@@ -1,7 +1,9 @@
 package asinoladro.api;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.money.Money;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -10,13 +12,17 @@ import asinoladro.api.serialization.MoneyDeserializer;
 import asinoladro.api.serialization.MoneySerializer;
 
 public class Account {
-	private String iban;
+	@NotEmpty
+    private String iban;
 	
-	private Money balance;
+	@NotEmpty
+    private Money balance;
     
-	private Customer customer;
+	@NotEmpty
+    private Customer customer;
 
-	public Account(
+    @JsonCreator
+    public Account(
 			@JsonProperty("iban") String iban,
 			@JsonProperty("balance") @JsonDeserialize(using = MoneyDeserializer.class) Money balance,
 			@JsonProperty("customer") Customer customer
