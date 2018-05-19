@@ -144,11 +144,9 @@ public class BankTransferResource {
     		accountDao.addFunds(toAccount.getIban(), toMoney.getAmount());
     		return transactionDao.addTransaction(
 			fromAccount.getIban(),
-			fromMoney.getAmount(),
-			fromCurrency.toString(),
+			fromMoney,
 			toAccount.getIban(),
-			toMoney.getAmount(),
-			toCurrency.toString(),
+			toMoney,
 			exchangeRate
 		);
     }
