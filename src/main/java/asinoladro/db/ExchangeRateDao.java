@@ -2,8 +2,9 @@ package asinoladro.db;
 
 import java.math.BigDecimal;
 
-import org.jdbi.v3.sqlobject.customizer.Bind;
+import org.jdbi.v3.sqlobject.customizer.BindMethods;
 import org.jdbi.v3.sqlobject.statement.SqlQuery;
+import org.joda.money.CurrencyUnit;
 
 public interface ExchangeRateDao {
 	/**
@@ -14,8 +15,8 @@ public interface ExchangeRateDao {
 	 * @return current exchange rate
 	 */
 	@SqlQuery("select rate from exchangeRates where "
-			+ "fromCurrencyLowerAlpha = :from and toCurrencyHigherAlpha = :to")
+			+ "fromCurrencyLowerAlpha = :from.toString and toCurrencyHigherAlpha = :to.toString")
 	BigDecimal getExchangeRate(
-			@Bind("from") String fromCurrencyLowerAlpha,
-			@Bind("to") String toCurrencyHigherAlpha);
+			@BindMethods("from") CurrencyUnit fromCurrencyLowerAlpha,
+			@BindMethods("to") CurrencyUnit toCurrencyHigherAlpha);
 }

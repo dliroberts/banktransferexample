@@ -110,34 +110,6 @@ public class BankTransferResource {
 		return new TransferConfirmation(transactionId, duration);
 	}
     
-    private BigDecimal getExchangeRate(CurrencyUnit from, CurrencyUnit to) {
-    		CurrencyUnit lowerAlpha, higherAlpha;
-    		
-    		boolean reverse;
-    		if (from.getCurrencyCode().compareTo(to.getCurrencyCode()) <= 0) {
-    			lowerAlpha = from;
-    			higherAlpha = to;
-    			reverse = false;
-    		}
-    		else {
-    			lowerAlpha = to;
-    			higherAlpha = from;
-    			reverse = true;
-    		}
-    		
-    		BigDecimal exchangeRate = exchangeRateDao.getExchangeRate(
-    				lowerAlpha.getCurrencyCode(), higherAlpha.getCurrencyCode());
-    		
-    		if (exchangeRate == null)
-    			throw new WebApplicationException(
-    					String.format("Exchange rate not found: {} to {}", lowerAlpha, higherAlpha));
-    		
-    		if (reverse)
-    			exchangeRate = BigDecimal.ONE.divide(exchangeRate, 2, RoundingMode.HALF_EVEN);
-    		
-    		return exchangeRate;
-    }
-    
     private long execLocalTransaction(Account fromAccount, Account toAccount, Money moneyToTransfer) {
     		final CurrencyUnit fromCurrency = fromAccount.getBalance().getCurrencyUnit();
     		final CurrencyUnit toCurrency = toAccount.getBalance().getCurrencyUnit();
@@ -147,12 +119,12 @@ public class BankTransferResource {
     		final BigDecimal exchangeRate;
     		
     		if (moneyToTransfer.getCurrencyUnit().equals(fromCurrency)) {
-    			exchangeRate = getExchangeRate(fromCurrency, toCurrency);
+    			exchangeRate = exchangeRateDao.getExchangeRate(fromCurrency, toCurrency);
     			fromMoney = moneyToTransfer;
     			toMoney = moneyToTransfer.convertedTo(toCurrency, exchangeRate, RoundingMode.HALF_EVEN);
     		}
     		else if (moneyToTransfer.getCurrencyUnit().equals(toCurrency)) {
-    			exchangeRate = getExchangeRate(toCurrency, fromCurrency);
+    			exchangeRate = exchangeRateDao.getExchangeRate(toCurrency, fromCurrency);
     			fromMoney = moneyToTransfer.convertedTo(fromCurrency, exchangeRate, RoundingMode.HALF_EVEN);
     			toMoney = moneyToTransfer;
     		}
