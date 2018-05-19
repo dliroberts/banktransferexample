@@ -10,3 +10,12 @@ insert into accounts (iban, currencyCode, balance, customerId) values ('ES236426
 insert into accounts (iban, currencyCode, balance, customerId) values ('GB22KVUM18028477988401', 'GBP', '1', 3);
 insert into accounts (iban, currencyCode, balance, customerId) values ('GB26JAYK66540091518150', 'GBP', '2', 4);
 insert into accounts (iban, currencyCode, balance, customerId) values ('BR8712345678123451234567890C1', 'BRL', '23', 5);
+
+-- all exchange rates are listed unidirectionally, with the 'from' currency code being the one with the
+-- lower alphabetic sort order.
+insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('EUR', 'GBP', 0.875415693);
+insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('EUR', 'USD', 1.179051);
+insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('BRL', 'GBP', 0.198671416);
+insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('BRL', 'EUR', 0.22694523);
+insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('BRL', 'USD', 0.26758);
+insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('GBP', 'USD', 1.346847);

@@ -21,12 +21,21 @@ alter table accounts
 create table transactions (
 	id bigint auto_increment primary key,
 	fromIban varchar(34) not null,
-	toIban varchar(34) not null,
 	fromAmount decimal not null,
 	fromCurrency varchar(3) not null,
+	toIban varchar(34) not null,
 	toAmount decimal not null,
 	toCurrency varchar(3) not null,
 	exchangeRate	 decimal not null,
 	createdAt timestamp not null default current_timestamp(),
 	updatedAt timestamp not null default current_timestamp()
+);
+
+create table exchangeRates (
+	fromCurrencyLowerAlpha varchar(3) not null,
+	toCurrencyHigherAlpha varchar(3) not null,
+	rate decimal not null,
+	createdAt timestamp not null default current_timestamp(),
+	updatedAt timestamp not null default current_timestamp(),
+	primary key(fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate)
 );

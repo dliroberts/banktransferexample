@@ -3,6 +3,8 @@ package asinoladro;
 import org.jdbi.v3.core.Jdbi;
 
 import asinoladro.db.AccountDao;
+import asinoladro.db.ExchangeRateDao;
+import asinoladro.db.TransactionDao;
 import asinoladro.resources.BankTransferResource;
 import io.dropwizard.Application;
 import io.dropwizard.jdbi3.JdbiFactory;
@@ -32,9 +34,12 @@ public class BankTransferExampleApplication extends Application<BankTransferExam
         JdbiFactory factory = new JdbiFactory();
         Jdbi jdbi = factory.build(environment, config.getDataSourceFactory(), "database");
     		
-        AccountDao dao = jdbi.onDemand(AccountDao.class);
+        AccountDao accountDao = jdbi.onDemand(AccountDao.class);
+        TransactionDao transactionDao = jdbi.onDemand(TransactionDao.class);
+        ExchangeRateDao exchangeRateDao = jdbi.onDemand(ExchangeRateDao.class);
         
-    		BankTransferResource resource = new BankTransferResource(dao);
+    		BankTransferResource resource =
+    				new BankTransferResource(accountDao, transactionDao, exchangeRateDao);
         
         JerseyEnvironment jersey = environment.jersey();
         jersey.register(resource);
