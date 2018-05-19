@@ -13,7 +13,7 @@ public interface ExchangeRateDao {
 	 * @param toCurrencyHigherAlpha the alphabetically higher currency
 	 * @return current exchange rate
 	 */
-	@SqlQuery("select rate from exchange_rates where "
+	@SqlQuery("select rate from exchangeRates where "
 			+ "fromCurrencyLowerAlpha = :from and toCurrencyHigherAlpha = :to")
 	BigDecimal getExchangeRate(
 			@Bind("from") String fromCurrencyLowerAlpha,

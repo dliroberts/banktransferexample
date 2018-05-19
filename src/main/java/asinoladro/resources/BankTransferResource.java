@@ -1,6 +1,7 @@
 package asinoladro.resources;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -112,13 +113,16 @@ public class BankTransferResource {
     private BigDecimal getExchangeRate(CurrencyUnit from, CurrencyUnit to) {
     		CurrencyUnit lowerAlpha, higherAlpha;
     		
+    		boolean reverse;
     		if (from.getCurrencyCode().compareTo(to.getCurrencyCode()) <= 0) {
     			lowerAlpha = from;
     			higherAlpha = to;
+    			reverse = false;
     		}
     		else {
     			lowerAlpha = to;
     			higherAlpha = from;
+    			reverse = true;
     		}
     		
     		BigDecimal exchangeRate = exchangeRateDao.getExchangeRate(
@@ -127,6 +131,9 @@ public class BankTransferResource {
     		if (exchangeRate == null)
     			throw new WebApplicationException(
     					String.format("Exchange rate not found: {} to {}", lowerAlpha, higherAlpha));
+    		
+    		if (reverse)
+    			exchangeRate = BigDecimal.ONE.divide(exchangeRate, 2, RoundingMode.HALF_EVEN);
     		
     		return exchangeRate;
     }
@@ -142,11 +149,11 @@ public class BankTransferResource {
     		if (moneyToTransfer.getCurrencyUnit().equals(fromCurrency)) {
     			exchangeRate = getExchangeRate(fromCurrency, toCurrency);
     			fromMoney = moneyToTransfer;
-    			toMoney = Money.of(toCurrency, moneyToTransfer.getAmount().divide(exchangeRate));
+    			toMoney = moneyToTransfer.convertedTo(toCurrency, exchangeRate, RoundingMode.HALF_EVEN);
     		}
     		else if (moneyToTransfer.getCurrencyUnit().equals(toCurrency)) {
     			exchangeRate = getExchangeRate(toCurrency, fromCurrency);
-    			fromMoney = Money.of(fromCurrency, moneyToTransfer.getAmount().divide(exchangeRate));
+    			fromMoney = moneyToTransfer.convertedTo(fromCurrency, exchangeRate, RoundingMode.HALF_EVEN);
     			toMoney = moneyToTransfer;
     		}
     		else {
@@ -156,13 +163,13 @@ public class BankTransferResource {
     		}
     		
     		if (fromAccount.getBalance().getAmount().subtract(
-    				moneyToTransfer.getAmount()).compareTo(BigDecimal.ZERO) <= 0) {
+    				fromMoney.getAmount()).compareTo(BigDecimal.ZERO) <= 0) {
     			throw new WebApplicationException(
     					"There are not enough funds in fromAccount for this transaction.");
     		}
     		
-    		accountDao.addFunds(fromAccount.getIban(), moneyToTransfer.getAmount().negate());
-    		accountDao.addFunds(toAccount.getIban(), moneyToTransfer.getAmount());
+    		accountDao.addFunds(fromAccount.getIban(), fromMoney.getAmount().negate());
+    		accountDao.addFunds(toAccount.getIban(), toMoney.getAmount());
     		return transactionDao.addTransaction(
 			fromAccount.getIban(),
 			fromMoney.getAmount(),
