@@ -23,6 +23,7 @@ import asinoladro.api.TransferRequest;
 import asinoladro.db.AccountDao;
 import asinoladro.db.ExchangeRateDao;
 import asinoladro.db.TransactionDao;
+import asinoladro.db.TransactionExecutorDao;
 
 @Path("/transfer")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -32,11 +33,13 @@ public class BankTransferResource {
 	private final AccountDao accountDao;
 	private final TransactionDao transactionDao;
 	private final ExchangeRateDao exchangeRateDao;
+	private final TransactionExecutorDao transactionExec;
 
-	public BankTransferResource(AccountDao accountDao, TransactionDao transactionDao, ExchangeRateDao exchangeRateDao) {
+	public BankTransferResource(AccountDao accountDao, TransactionDao transactionDao, ExchangeRateDao exchangeRateDao, TransactionExecutorDao transactionExec) {
 		this.accountDao = accountDao;
 		this.transactionDao = transactionDao;
 		this.exchangeRateDao = exchangeRateDao;
+		this.transactionExec = transactionExec;
 	}
 	
     @POST
@@ -134,15 +137,8 @@ public class BankTransferResource {
     					"There are not enough funds in fromAccount for this transaction.");
     		}
     		
-    		accountDao.addFunds(fromAccount.getIban(), fromMoney.getAmount().negate());
-    		accountDao.addFunds(toAccount.getIban(), toMoney.getAmount());
-    		long transactionId = transactionDao.addTransaction(
-			fromAccount.getIban(),
-			fromMoney,
-			toAccount.getIban(),
-			toMoney,
-			exchangeRate
-		);
+    		long transactionId = transactionExec.execTransaction(
+			fromAccount, fromMoney, toAccount, toMoney, exchangeRate);
     		Duration duration = Duration.millis(0); // instant!
 		
     		return new TransferConfirmation(transactionId, duration, fromMoney, toMoney);

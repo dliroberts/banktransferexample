@@ -9,6 +9,7 @@ import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import org.joda.money.Money;
 
 public interface TransactionDao {
+	
 	@GetGeneratedKeys
 	@SqlUpdate("insert into transactions "
 			+ "(fromIban, fromAmount, fromCurrency, toIban, toAmount, toCurrency, exchangeRate) "
@@ -16,7 +17,7 @@ public interface TransactionDao {
 			+ "(:fromIban, :fromMoney.getAmount.toString, :fromMoney.getCurrencyUnit.toString,"
 			+ "   :toIban,   :toMoney.getAmount.toString,   :toMoney.getCurrencyUnit.toString,"
 			+ " :exchangeRate)")
-	long addTransaction(
+	public abstract long addTransaction(
 		@Bind("fromIban") String fromIban,
 		@BindMethods("fromMoney") Money fromMoney,
 		@Bind("toIban") String toIban,
