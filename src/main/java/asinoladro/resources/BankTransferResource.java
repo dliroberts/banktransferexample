@@ -55,9 +55,6 @@ public class BankTransferResource {
 		boolean isLocalFrom = localFrom != null;
 		boolean isLocalTo = localTo != null;
 		
-		long transactionId;
-		Duration duration;
-		
 		// check name, currency in spec is (roughly) correct
 		if (isLocalFrom && !from.matches(localFrom)) {
 			throw new WebApplicationException("fromAccount details don't match our records.");
@@ -72,9 +69,7 @@ public class BankTransferResource {
 		}
 		
 		if (isLocalFrom && isLocalTo) {
-			duration = Duration.millis(0); // instant!
-			
-			transactionId = execLocalTransaction(localFrom, localTo, amount);
+			return execLocalTransaction(localFrom, localTo, amount);
 		}
 		else if (!isLocalFrom && !isLocalTo) {
 			throw new WebApplicationException(
@@ -106,11 +101,10 @@ public class BankTransferResource {
 			throw new WebApplicationException(
 					"Transfers from or to a non-local account are not currently supported.");
 		}
-		
-		return new TransferConfirmation(transactionId, duration);
 	}
     
-    private long execLocalTransaction(Account fromAccount, Account toAccount, Money moneyToTransfer) {
+    private TransferConfirmation execLocalTransaction(
+    			Account fromAccount, Account toAccount, Money moneyToTransfer) {
     		final CurrencyUnit fromCurrency = fromAccount.getBalance().getCurrencyUnit();
     		final CurrencyUnit toCurrency = toAccount.getBalance().getCurrencyUnit();
     		
@@ -142,13 +136,16 @@ public class BankTransferResource {
     		
     		accountDao.addFunds(fromAccount.getIban(), fromMoney.getAmount().negate());
     		accountDao.addFunds(toAccount.getIban(), toMoney.getAmount());
-    		return transactionDao.addTransaction(
+    		long transactionId = transactionDao.addTransaction(
 			fromAccount.getIban(),
 			fromMoney,
 			toAccount.getIban(),
 			toMoney,
 			exchangeRate
 		);
+    		Duration duration = Duration.millis(0); // instant!
+		
+    		return new TransferConfirmation(transactionId, duration, fromMoney, toMoney);
     }
     
     private Account getLocalAccount(AccountSpec account) {
