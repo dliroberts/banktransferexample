@@ -132,7 +132,7 @@ public class BankTransferResource {
 		}
 	}
     
-    private TransferConfirmation execLocalTransaction(
+    TransferConfirmation execLocalTransaction(
     			Account fromAccount, Account toAccount, Money moneyToTransfer) {
     		final CurrencyUnit fromCurrency = fromAccount.getBalance().getCurrencyUnit();
     		final CurrencyUnit toCurrency = toAccount.getBalance().getCurrencyUnit();
@@ -170,7 +170,7 @@ public class BankTransferResource {
     		return new TransferConfirmation(transactionId, duration, fromMoney, toMoney);
     }
     
-    private Account getLocalAccount(AccountSpec account) {
+    Account getLocalAccount(AccountSpec account) {
     		return accountDao.findAccountByIban(account.getIban());
     }
 }
