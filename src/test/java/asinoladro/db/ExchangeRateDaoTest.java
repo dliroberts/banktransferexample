@@ -10,19 +10,18 @@ import org.junit.Test;
 
 public class ExchangeRateDaoTest extends BaseDaoTest {
 	
-    private ExchangeRateDao exchangeRateDao;
+    private ExchangeRateDao dao;
 
     @Before
-    public void before2() {
-    		exchangeRateDao = getJdbi().onDemand(ExchangeRateDao.class);
+    public void before() {
+    		dao = getJdbi().onDemand(ExchangeRateDao.class);
     }
 
     @Test
     public void eurGbpExchangeRate() {
     		BigDecimal expected = new BigDecimal("0.875415693");
-    		BigDecimal actual = exchangeRateDao.getExchangeRate(CurrencyUnit.EUR, CurrencyUnit.GBP);
+    		BigDecimal actual = dao.getExchangeRate(CurrencyUnit.EUR, CurrencyUnit.GBP);
     		
     		assertEquals(expected, actual);
     }
-
 }

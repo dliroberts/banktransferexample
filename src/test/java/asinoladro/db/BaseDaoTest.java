@@ -20,7 +20,7 @@ public class BaseDaoTest {
     private Jdbi jdbi;
     
     @Before
-    public void before() throws Throwable {
+    public void setupDb() throws Throwable {
     		JdbiFactory factory = new JdbiFactory();
         jdbi = factory.build(SUPPORT.getEnvironment(),
         		SUPPORT.getConfiguration().getDataSourceFactory(), "database");
