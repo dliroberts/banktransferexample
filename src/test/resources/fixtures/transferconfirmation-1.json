@@ -1,0 +1,6 @@
+{
+    "transactionId": 3,
+    "estimatedTransferDuration": "PT5S",
+    "amountDebited": "BRL 1.01",
+    "amountCredited": "EUR 0.23"
+}

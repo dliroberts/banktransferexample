@@ -1,0 +1,5 @@
+{
+	"amount": "brl 1.01",
+	"toAccount": {"iban": "FR9476231310567227640169067", "fullName": "mr Duncan    RobertS ", "currency": "EUR"},
+	"fromAccount": {"iban": "BR8712345678123451234567890C1", "fullName": "prof r. da Silva", "currency": "BRL"}
+}

@@ -63,7 +63,7 @@ public class BankTransferResource {
 	 *  <li>No payment references, account addresses...</li>
 	 *  <li>No tracking of historic exchange rate data (this would best be kept in a separate table to avoid
 	 *  slowing down the rate lookup.)</li>
-	 * <ol>
+	 * </ol>
 	 * 
 	 * @param req
 	 * @return

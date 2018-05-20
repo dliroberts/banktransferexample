@@ -4,10 +4,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.joda.money.Money;
 import org.joda.time.Duration;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import asinoladro.api.serialization.CurrencyUnitDeserializer;
 import asinoladro.api.serialization.Iso8601DurationSerializer;
+import asinoladro.api.serialization.MoneyDeserializer;
 import asinoladro.api.serialization.MoneySerializer;
 
 public class TransferConfirmation {
@@ -23,8 +27,14 @@ public class TransferConfirmation {
 	@NotEmpty
 	private final Money amountCredited;
 	
-	public TransferConfirmation(long transactionId, Duration estimatedTransferDuration, Money amountDebited,
-			Money amountCredited) {
+	@JsonCreator
+    public TransferConfirmation(
+	    		@JsonProperty("transactionId") long transactionId,
+	    		@JsonProperty("estimatedTransferDuration") Duration estimatedTransferDuration,
+	    		@JsonProperty("amountDebited") @JsonDeserialize(using = MoneyDeserializer.class)
+	    		Money amountDebited,
+	    		@JsonProperty("amountCredited") @JsonDeserialize(using = MoneyDeserializer.class)
+	    		Money amountCredited) {
 		this.transactionId = transactionId;
 		this.estimatedTransferDuration = estimatedTransferDuration;
 		this.amountDebited = amountDebited;
