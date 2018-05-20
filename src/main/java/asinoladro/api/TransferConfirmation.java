@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import asinoladro.api.serialization.CurrencyUnitDeserializer;
 import asinoladro.api.serialization.Iso8601DurationSerializer;
 import asinoladro.api.serialization.MoneyDeserializer;
 import asinoladro.api.serialization.MoneySerializer;
