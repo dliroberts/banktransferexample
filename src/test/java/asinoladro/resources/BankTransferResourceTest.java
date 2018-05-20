@@ -251,4 +251,18 @@ public class BankTransferResourceTest {
 		
 		post(req);
 	}
+
+	/**
+	 * unknown accounts
+	 */
+	@Test(expected = ProcessingException.class)
+	public void unknownAccounts() {
+		TransferRequest req = new TransferRequest(
+			Money.of(CurrencyUnit.EUR, BigDecimal.ONE),
+			new AccountSpec("NL74INGB0799764173", "eve allan", CurrencyUnit.EUR),
+			new AccountSpec("NL58RABO0305388670", "harriet jones", CurrencyUnit.EUR)
+		);
+		
+		post(req);
+	}
 }

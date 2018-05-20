@@ -20,7 +20,7 @@ public class TransferConfirmationTest {
 	private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
 	@Test
-	public void test() throws Exception {
+	public void serializesFromJson() throws Exception {
         final TransferConfirmation expected = new TransferConfirmation(
         		3L,
         		Duration.millis(5000),
