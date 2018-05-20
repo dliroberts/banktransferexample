@@ -66,6 +66,8 @@ public class AccountSpec {
 	    	String otherName = normaliseName(otherFullName);
 	    	
 	    	// strip out any honorific titles
+	    	// FIXME: this will only work for english honorifics! should be linked to country in which the
+	    	// account is held, e.g. M., Mme. and Mlle. in france.
 	    	for (Title title : Title.values()) {
 	    		String t = title.toString() + " ";
 	    		

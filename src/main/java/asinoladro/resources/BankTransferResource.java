@@ -39,6 +39,35 @@ public class BankTransferResource {
 		this.exchangeRateDao = exchangeRateDao;
 	}
 	
+	/**
+	 * Transfers funds from one account to another.
+	 * 
+	 * <p>Features of note:</p>
+	 * 
+	 * <ol>
+	 *  <li>Supports transfers between different currencies.</li>
+	 *  <li>Requester must specify the IBANs, account holder names and account currencies of both accounts;
+	 *  there is fuzzy match logic on the names so 'MR D. ROBERTS' will match an account held by 'Duncan
+	 *  Roberts'.</li>
+	 * </ol>
+	 * 
+	 * <p>Limitations:</p>
+	 * 
+	 * <ol>
+	 * 	<li>Accounts are identified by IBANs, but as of May 2018, many countries (including the US) have not
+	 *  yet adopted the IBAN standard.</li>
+	 *  <li>Both the from and to accounts must be 'internal', i.e. held by this bank. See notes below on
+	 * 	how consistency might be achieved for inter-bank transfers through distributed transactions.</li>
+	 * 	<li>The transfer is rejected if it would result in a negative balance in the from account:
+	 *  no support for overdrafts.</li>
+	 *  <li>No payment references, account addresses...</li>
+	 *  <li>No tracking of historic exchange rate data (this would best be kept in a separate table to avoid
+	 *  slowing down the rate lookup.)</li>
+	 * <ol>
+	 * 
+	 * @param req
+	 * @return
+	 */
     @POST
     @Timed
     public TransferConfirmation transferMoney(TransferRequest req) {
@@ -129,7 +158,7 @@ public class BankTransferResource {
     		}
     		
     		if (fromAccount.getBalance().getAmount().subtract(
-    				fromMoney.getAmount()).compareTo(BigDecimal.ZERO) <= 0) {
+    				fromMoney.getAmount()).compareTo(BigDecimal.ZERO) < 0) {
     			throw new WebApplicationException(
     					"There are not enough funds in fromAccount for this transaction.");
     		}

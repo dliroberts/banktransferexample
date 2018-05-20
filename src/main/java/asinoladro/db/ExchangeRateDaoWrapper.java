@@ -39,7 +39,7 @@ public class ExchangeRateDaoWrapper implements ExchangeRateDao {
     		
     		if (exchangeRate == null)
     			throw new WebApplicationException(
-    					String.format("Exchange rate not found: {} to {}", lowerAlpha, higherAlpha));
+    					String.format("Exchange rate not found: %s to %s", lowerAlpha, higherAlpha));
     		
     		if (invert)
     			exchangeRate = BigDecimal.ONE.divide(exchangeRate, 2, RoundingMode.HALF_EVEN);
