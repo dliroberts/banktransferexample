@@ -4,7 +4,6 @@ import org.jdbi.v3.core.Jdbi;
 
 import asinoladro.db.AccountDao;
 import asinoladro.db.ExchangeRateDao;
-import asinoladro.db.ExchangeRateDaoWrapper;
 import asinoladro.db.TransactionDao;
 import asinoladro.resources.BankTransferResource;
 import io.dropwizard.Application;
@@ -37,7 +36,7 @@ public class BankTransferExampleApplication extends Application<BankTransferExam
     		
         AccountDao accountDao = jdbi.onDemand(AccountDao.class);
         TransactionDao transactionDao = jdbi.onDemand(TransactionDao.class);
-        ExchangeRateDao exchangeRateDao = new ExchangeRateDaoWrapper(jdbi.onDemand(ExchangeRateDao.class));
+        ExchangeRateDao exchangeRateDao = jdbi.onDemand(ExchangeRateDao.class);
         
     		BankTransferResource resource =
     				new BankTransferResource(accountDao, transactionDao, exchangeRateDao);

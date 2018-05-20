@@ -32,10 +32,10 @@ create table transactions (
 );
 
 create table exchangeRates (
-	fromCurrencyLowerAlpha varchar(3) not null,
-	toCurrencyHigherAlpha varchar(3) not null,
+	fromCurrency varchar(3) not null,
+	toCurrency varchar(3) not null,
 	rate decimal not null,
 	createdAt timestamp not null default current_timestamp(),
 	updatedAt timestamp not null default current_timestamp(),
-	primary key(fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate)
+	primary key(fromCurrency, toCurrency, rate)
 );

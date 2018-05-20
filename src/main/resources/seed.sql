@@ -11,11 +11,16 @@ insert into accounts (iban, currencyCode, balance, customerId) values ('GB22KVUM
 insert into accounts (iban, currencyCode, balance, customerId) values ('GB26JAYK66540091518150', 'GBP', 20.99, 4);
 insert into accounts (iban, currencyCode, balance, customerId) values ('BR8712345678123451234567890C1', 'BRL', 23, 5);
 
--- all exchange rates are listed unidirectionally, with the 'from' currency code being the one with the
--- lower alphabetic sort order.
-insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('EUR', 'GBP', 0.875415693);
-insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('EUR', 'USD', 1.179051);
-insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('BRL', 'GBP', 0.198671416);
-insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('BRL', 'EUR', 0.22694523);
-insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('BRL', 'USD', 0.26758);
-insert into exchangeRates (fromCurrencyLowerAlpha, toCurrencyHigherAlpha, rate) values ('GBP', 'USD', 1.346847);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('EUR', 'GBP', 0.875415693);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('EUR', 'USD', 1.179051);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('BRL', 'GBP', 0.198671416);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('BRL', 'EUR', 0.22694523);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('BRL', 'USD', 0.26758);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('GBP', 'USD', 1.346847);
+
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('GBP', 'EUR', 1.14231445472);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('USD', 'EUR', 0.848139733);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('GBP', 'BRL', 5.03343672);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('EUR', 'BRL', 4.4063495);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('USD', 'BRL', 3.73720009);
+insert into exchangeRates (fromCurrency, toCurrency, rate) values ('USD', 'GBP', 0.742474832);
