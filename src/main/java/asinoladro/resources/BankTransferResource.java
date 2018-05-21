@@ -64,6 +64,9 @@ public class BankTransferResource {
 	 *  <li>No tracking of historic exchange rate data (this would best be kept in a separate table to avoid
 	 *  slowing down the rate lookup.)</li>
 	 * </ol>
+	 * 
+	 * @param req How much to transfer, from whom and to who.
+	 * @return Confirmation that the transfer has been completed.
 	 */
     @POST
     @Timed
