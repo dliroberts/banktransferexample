@@ -27,3 +27,8 @@ Health Check
 ---
 
 To see your application's health, go to URL `http://localhost:8097/healthcheck`
+
+Notes
+---
+
+Developed and tested using Java 1.8.0_121.
