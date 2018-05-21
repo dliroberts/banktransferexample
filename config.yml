@@ -18,3 +18,11 @@ database:
 
   # the SQL query to run when validating a connection's liveness
   validationQuery: "/* MyService Health Check */ SELECT 1"
+
+server:
+  applicationConnectors:
+    - type: http
+      port: 8096
+  adminConnectors:
+    - type: http
+      port: 8097
