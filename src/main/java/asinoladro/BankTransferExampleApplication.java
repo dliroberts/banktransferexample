@@ -20,7 +20,7 @@ public class BankTransferExampleApplication extends Application<BankTransferExam
 
     @Override
     public String getName() {
-        return "BankTransferRevolut";
+        return "BankTransferExample";
     }
 
     @Override
